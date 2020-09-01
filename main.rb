@@ -57,9 +57,15 @@ end
 
 class Monster
   # name, offense, defense属性は値の取り出し（ゲッター）のみ
-  attr_reader :name, :offense, :defense
+  attr_reader :offense, :defense
   # hpは取り出し、代入が可能
-  attr_accessor :hp
+  # 変身時名前を変更するためnameを読み書き可能に
+  attr_accessor :hp,:name
+
+  # 変身時の攻撃力UPの倍数
+  MONSTER_SPECIAL_CONSTANT = 2
+  # HPの半分の値を計算する定数
+  CALC_HALF_HP = 0.5
 
   # new演算子の引数を受け取って初期値を設定
   def initialize(**params)
@@ -67,10 +73,49 @@ class Monster
     @hp = params[:hp]
     @offense = params[:offense]
     @defense = params[:defense]
+    # 変身するかどうかのフラグ
+    @change = false
+    # 現在のHPが初期HPの半分かどうかの閾値算出
+    @half_hp = params[:hp] * CALC_HALF_HP
   end
+
+  # モンスターの攻撃処理を実装
+  def attack(brave)
+    # そのときのHPが半分以下で変身フラグがfalseの場合transformメソッドを発火
+    if @hp <= @half_hp && @change == false
+      transform
+    end
+
+    puts "#{@name}の攻撃"
+
+    damage = @offense - brave.defense
+    brave.hp -= damage
+
+    puts "#{brave.name}は#{damage}のダメージを受けた"
+    puts "#{brave.name}の残りHPは#{brave.hp}だ"
+  end
+
+  private
+
+  # クラス外からは呼び出さないのでprivate以下に記述
+  def transform
+    # フラグをtrueに変更
+    @change = true
+    # 変身後の名前を定義
+    transform_name = "ドラゴン"
+    puts "#{@name}は怒っている"
+    puts "#{@name}は#{transform_name}に変身した"
+    # 攻撃力の変更
+    @offense *= MONSTER_SPECIAL_CONSTANT
+    # 一度変身した後はインスタンスの名前を変身後のものにする
+    @name = transform_name
+  end
+
 end
 
 brave = Brave.new(name: "テリー", hp: 500, offense: 150, defense: 100)
 monster = Monster.new(name: "スライム", hp: 250, offense: 200, defense: 100)
 
 brave.attack(monster)
+monster.attack(brave)
+puts "#{monster.name}"
