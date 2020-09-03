@@ -27,32 +27,60 @@ class Brave
   def attack(monster)
     puts "#{@name}の攻撃"
 
+    # 攻撃を判定するメソッドを呼び出し
+    attack_type = decision_attack_type
+
+    # ダメージ計算メソッド抜き出し
+    damage = caluclate_damage(target: monster, attack_type: attack_type)
+
+    # ダメージをhpに反映させる
+    cause_damage(target: monster, damage: damage)
+
+    puts "#{monster.name}の残りHPは#{monster.hp}だ"
+  end
+
+  private
+
+  def decision_attack_type
     # 必殺攻撃と通常攻撃の切り分け（4分の1の確率で必殺攻撃を行う）
     # 0~3の間のランダムに数字が変わる
     attack_num = rand(4)
 
-    # 4分の1の確率で必殺攻撃を行う
     if attack_num == 0
       # 必殺攻撃
       puts "必殺攻撃"
-      damage = calculate_special_attack - monster.defense
+      "special_attack"
     else
       # 通常攻撃（ダメージ計算：勇者の攻撃力 - モンスターの守備力）
       puts "通常攻撃"
-      damage = @offense - monster.defense
+      "normal_attack"
     end
+  end
+
+  def caluclate_damage(**params)
+    target = params[:target]
+    attack_type = params[:attack_type]
+
+    # attack_typeを使って切り分け
+    if attack_type == "special_attack"
+      calculate_special_attack - target.defense
+    else
+      @offense - target.defense
+    end
+  end
+
+  def cause_damage(**params)
+    target = params[:target]
+    damage = params[:damage]
 
     # 攻撃対象のモンスターHPからダメージ分を引く
-    monster.hp -= damage
-
-    puts "#{monster.name}は#{damage}のダメージを受けた"
-    puts "#{monster.name}の残りHPは#{monster.hp}だ"
+    target.hp -= damage
+    puts "#{target.name}は#{damage}のダメージを受けた"
   end
 
   def calculate_special_attack
     @offense * SPECIAL_ATTACK_CONSTANT
   end
-
 end
 
 class Monster
