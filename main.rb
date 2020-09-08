@@ -109,17 +109,22 @@ class Monster
 
   # モンスターの攻撃処理を実装
   def attack(brave)
+    puts "モンスターのターン"
     # そのときのHPが半分以下で変身フラグがfalseの場合transformメソッドを発火
     if @hp <= @half_hp && @change == false
+      # 変身フラグをtrue（変身済み）にした上でtransformメソッドを呼び出す
+      @change = ture
       transform
     end
 
     puts "#{@name}の攻撃"
 
-    damage = @offense - brave.defense
-    brave.hp -= damage
+    # ダメージ計算処理は別メソッドに切り出し
+    damage = caluclate_damage(brave)
 
-    puts "#{brave.name}は#{damage}のダメージを受けた"
+    # ダメージのHPへの反映も別メソッドに切り出し
+    cause_damage(target: brave, damage: damage)
+
     puts "#{brave.name}の残りHPは#{brave.hp}だ"
   end
 
@@ -139,6 +144,18 @@ class Monster
     @name = transform_name
   end
 
+  # ダメージ計算
+  def caluclate_damage(brave)
+    @offense - brave.defense
+  end
+
+  # ダメージをHPに反映
+  def cause_damage(**params)
+    target = params[:target]
+    damage = params[:damage]
+    puts "#{target.name}は#{damage}のダメージを受けた"
+    target.hp -= damage
+  end
 end
 
 brave = Brave.new(name: "テリー", hp: 500, offense: 150, defense: 100)
