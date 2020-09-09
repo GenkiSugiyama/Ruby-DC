@@ -75,6 +75,10 @@ class Brave
 
     # 攻撃対象のモンスターHPからダメージ分を引く
     target.hp -= damage
+
+    # 攻撃対象のHPがマイナスなら0を代入
+    target.hp = 0 if target.hp < 0
+
     puts "#{target.name}は#{damage}のダメージを受けた"
   end
 
@@ -155,6 +159,8 @@ class Monster
     damage = params[:damage]
     puts "#{target.name}は#{damage}のダメージを受けた"
     target.hp -= damage
+    # 攻撃対象のHPがマイナスなら0を代入
+    target.hp = 0 if target.hp < 0
   end
 end
 
@@ -164,5 +170,16 @@ monster = Monster.new(name: "スライム", hp: 250, offense: 200, defense: 100)
 # loop doでループ処理
 loop do
   brave.attack(monster)
+
+  # モンスターのHPが0になったらループ処理を終了する
+  if monster.hp <= 0
+    break
+  end
+
   monster.attack(brave)
+
+  # 勇者のHPが0になったらループ処理を終了する
+  if brave.hp <= 0
+    break
+  end
 end
