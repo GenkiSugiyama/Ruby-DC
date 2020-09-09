@@ -113,7 +113,7 @@ class Monster
     # そのときのHPが半分以下で変身フラグがfalseの場合transformメソッドを発火
     if @hp <= @half_hp && @change == false
       # 変身フラグをtrue（変身済み）にした上でtransformメソッドを呼び出す
-      @change = ture
+      @change = true
       transform
     end
 
@@ -161,6 +161,8 @@ end
 brave = Brave.new(name: "テリー", hp: 500, offense: 150, defense: 100)
 monster = Monster.new(name: "スライム", hp: 250, offense: 200, defense: 100)
 
-brave.attack(monster)
-monster.attack(brave)
-puts "#{monster.name}"
+# loop doでループ処理
+loop do
+  brave.attack(monster)
+  monster.attack(brave)
+end
