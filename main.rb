@@ -1,15 +1,6 @@
-# Braveクラス、Monsterクラスの共通部分を抜き出しCharacterクラスを作成
-class Character
-  attr_reader :offense, :defense
-  attr_accessor :hp, :name
+#  Characterクラスを別ファイルに分割
+require './character'
 
-  def initialize(**params)
-    @name = params[:name]
-    @hp = params[:hp]
-    @offense = params[:offense]
-    @defense = params[:defense]
-  end
-end
 
 # Characterクラスを継承
 class Brave < Character
