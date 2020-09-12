@@ -31,17 +31,17 @@ class Monster < Character
       transform
     end
 
-    # puts "#{@name}の攻撃"
-    # MessageDialogモジュールのattack_messageを呼び出し
-    attack_message
-
     # ダメージ計算処理は別メソッドに切り出し
     damage = caluclate_damage(brave)
 
     # ダメージのHPへの反映も別メソッドに切り出し
     cause_damage(target: brave, damage: damage)
 
-    # puts "#{brave.name}の残りHPは#{brave.hp}だ"
+    # MessageDialogモジュールのattack_messageを呼び出し
+    attack_message
+
+    # damage_messageメソッド呼び出し
+    damage_message(target: brave, damage: damage)
   end
 
   private
