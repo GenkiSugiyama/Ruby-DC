@@ -1,6 +1,9 @@
 require './character'
+require './message_dialog'
 
 class Monster < Character
+
+  include MessageDialog
 
   # 変身時の攻撃力UPの倍数
   MONSTER_SPECIAL_CONSTANT = 2
@@ -48,12 +51,12 @@ class Monster < Character
 
   # クラス外からは呼び出さないのでprivate以下に記述
   def transform
-    # フラグをtrueに変更
-    @change = true
     # 変身後の名前を定義
     transform_name = "ドラゴン"
-    # puts "#{@name}は怒っている"
-    # puts "#{@name}は#{transform_name}に変身した"
+
+    # transform_messageを呼び出し
+    transform_message(origin_name: @name, transform_name: transform_name)
+
     # 攻撃力の変更
     @offense *= MONSTER_SPECIAL_CONSTANT
     # 一度変身した後はインスタンスの名前を変身後のものにする
