@@ -21,7 +21,7 @@ class Brave < Character
   # 攻撃処理を実装
   # 引数に攻撃対象となるモンスタークラスのインスタンスを受け取る
   def attack(monster)
-    puts "#{@name}の攻撃"
+    # puts "#{@name}の攻撃"
 
     # 攻撃を判定するメソッドを呼び出し
     attack_type = decision_attack_type
@@ -32,7 +32,11 @@ class Brave < Character
     # ダメージをhpに反映させる
     cause_damage(target: monster, damage: damage)
 
-    puts "#{monster.name}の残りHPは#{monster.hp}だ"
+    # puts "#{monster.name}の残りHPは#{monster.hp}だ"
+
+    # MessageDialogモジュールのattack_messageを呼び出し
+    # attack_message内で攻撃種別の表示を切り替えるための引数を渡す
+    attack_message(attack_type: attack_type)
   end
 
   private
@@ -44,11 +48,11 @@ class Brave < Character
 
     if attack_num == 0
       # 必殺攻撃
-      puts "必殺攻撃"
+      # puts "必殺攻撃"
       "special_attack"
     else
       # 通常攻撃（ダメージ計算：勇者の攻撃力 - モンスターの守備力）
-      puts "通常攻撃"
+      # puts "通常攻撃"
       "normal_attack"
     end
   end
@@ -75,7 +79,7 @@ class Brave < Character
     # 攻撃対象のHPがマイナスなら0を代入
     target.hp = 0 if target.hp < 0
 
-    puts "#{target.name}は#{damage}のダメージを受けた"
+    # puts "#{target.name}は#{damage}のダメージを受けた"
   end
 
   def calculate_special_attack

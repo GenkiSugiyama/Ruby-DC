@@ -1,4 +1,9 @@
+require "./message_dialog"
+
 class Character
+  # 小クラスのBrave、MonsterクラスでMessageDialogモジュールを使うためのインクルード
+  include MessageDialog
+
   attr_reader :offense, :defense
   attr_accessor :hp, :name
 
