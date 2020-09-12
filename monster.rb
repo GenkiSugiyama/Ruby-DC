@@ -1,12 +1,12 @@
 require './character'
-require './message_dialog'
+# MessageDialogのrequireはCharacterクラスですでに実行しているのでここでは不要
 
 class Monster < Character
 
   include MessageDialog
 
   # 変身時の攻撃力UPの倍数
-  MONSTER_SPECIAL_CONSTANT = 2
+  MONSTER_SPECIAL_CONSTANT = 1.5
   # HPの半分の値を計算する定数
   CALC_HALF_HP = 0.5
 
@@ -26,7 +26,6 @@ class Monster < Character
 
   # モンスターの攻撃処理を実装
   def attack(brave)
-    # puts "モンスターのターン"
     # そのときのHPが半分以下で変身フラグがfalseの場合transformメソッドを発火
     if @hp <= @half_hp && @change == false
       # 変身フラグをtrue（変身済み）にした上でtransformメソッドを呼び出す
